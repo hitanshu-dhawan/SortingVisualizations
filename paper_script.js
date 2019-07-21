@@ -1,33 +1,108 @@
-
-var n = 499;
+// Sorting Visualizations
+// https://khan4019.github.io/front-end-Interview-Questions/sort.html
 
 var array = [];
-for (i = 0; i < n; i++) {
-    array.push(i + 1);
-}
-array = shuffle(array);
+var arraySize = 99;
 
-var steps_index = 0;
 var steps = [];
+var stepsIndex = 0;
 
-bubbleSort();
+prepareArray();
+shuffleArray();
 
-// function onFrame(event) {
-//     for (i = 0; i < n; i++) {
-//         var width = view.size.width / n;
-//         var height = array[i] * (view.size.height / n);
+// bubbleSort();
+selectionSort();
+// insertionSort();
 
-//         drawRectangle(
-//             i * width,
-//             view.size.height,
-//             i * width + width,
-//             view.size.height - height
-//         );
-//     }
-// }
+
+
+////////////////////////////////////////
+////////// Sorting Algorithms //////////
+////////////////////////////////////////
+
+function bubbleSort() {
+    saveStep();
+    var length = array.length;
+    for (var i = length - 1; i >= 0; i--) {
+        for (var j = 1; j <= i; j++) {
+            if (array[j - 1] > array[j]) {
+                var temp = array[j - 1];
+                array[j - 1] = array[j];
+                array[j] = temp;
+                saveStep();
+            }
+        }
+    }
+}
+
+function selectionSort() {
+    saveStep();
+    var length = array.length;
+    for (var i = 0; i < length; i++) {
+        var minIndex = i;
+        for (var j = i + 1; j < length; j++) {
+            if (array[j] < array[minIndex]) {
+                minIndex = j;
+            }
+        }
+        var temp = array[i];
+        array[i] = array[minIndex];
+        array[minIndex] = temp;
+        saveStep();
+    }
+}
+
+function insertionSort() {
+    saveStep();
+    var length = array.length;
+    for (var i = 1; i < length; i++) {
+        var key = array[i];
+        var j = i - 1;
+        while (j >= 0 && array[j] > key) {
+            array[j + 1] = array[j];
+            j--;
+        }
+        array[j + 1] = key;
+        saveStep();
+    }
+}
+
+////////////////////////////////////////
+
+////////////////////////////////////////
+//////////// Util functions ////////////
+////////////////////////////////////////
+
+function prepareArray() {
+    for (i = 0; i < arraySize; i++) {
+        array.push(i + 1);
+    }
+}
+
+function shuffleArray() {
+    var currentIndex = array.length;
+    while (currentIndex !== 0) {
+        var randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        var temp = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temp;
+    }
+}
+
+function saveStep() {
+    steps.push(array.slice());
+}
+
+////////////////////////////////////////
+
+////////////////////////////////////////
+///////// PaperScript functions ////////
+////////////////////////////////////////
+
 function onFrame(event) {
-    if (typeof steps[steps_index] === "undefined") {
-        location.reload(); // reload after some 2 seconds (todo)
+    if (typeof steps[stepsIndex] === "undefined") {
+        // location.reload(); // todo : reload after 2 seconds (setTimeout)
         return;
     }
 
@@ -36,13 +111,10 @@ function onFrame(event) {
         project.activeLayer.removeChildren();
     }
 
-    var arr = steps[steps_index++]
-    console.log(arr);
-
-    for (i = 0; i < n; i++) {
-        var width = view.size.width / n;
-        var height = arr[i] * (view.size.height / n);
-
+    var arr = steps[stepsIndex++]
+    for (i = 0; i < arraySize; i++) {
+        var width = view.size.width / arraySize;
+        var height = arr[i] * (view.size.height / arraySize);
         drawRectangle(
             i * width,
             view.size.height,
@@ -52,53 +124,8 @@ function onFrame(event) {
     }
 }
 
-function bubbleSort() {
-    steps.push(array.slice());
-    for (i = 0; i < n; i++) {
-        for (j = 0; j < n - i - 1; j++) {
-            if (array[j] > array[j + 1]) {
-                swap(array, j, j + 1);
-                steps.push(array.slice());
-            }
-        }
-    }
-}
-
-function swap(arr, firstIndex, secondIndex) {
-    var temp = arr[firstIndex];
-    arr[firstIndex] = arr[secondIndex];
-    arr[secondIndex] = temp;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-function shuffle(array) {
-    var copy = [], n = array.length, i;
-    // While there remain elements to shuffle
-    while (n) {
-        // Pick a remaining element…
-        i = Math.floor(Math.random() * array.length);
-        // If not already shuffled, move it to the new array.
-        if (i in array) {
-            copy.push(array[i]);
-            delete array[i];
-            n--;
-        }
-    }
-    return copy;
-}
-
 function drawRectangle(x1, y1, x2, y2) {
     var rectangle = new Rectangle(new Point(x1, y1), new Point(x2, y2));
     var path = new Path.Rectangle(rectangle);
     path.fillColor = 'white';
-}
-
-function sleep(milliseconds) {
-    var start = new Date().getTime();
-    for (i = 0; i < 1e7; i++) {
-        if ((new Date().getTime() - start) > milliseconds) {
-            break;
-        }
-    }
 }
