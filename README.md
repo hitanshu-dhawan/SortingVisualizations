@@ -1,8 +1,14 @@
 Sorting Visualizations
 ========================
 
-<img src="/images/bubbleSort.png">
+<kbd>
+  <img src="/images/bubbleSort.png">
+</kbd>
 
-<img src="/images/selectionSort.png">
+<kbd>
+  <img src="/images/selectionSort.png">
+</kbd>
 
-<img src="/images/insertionSort.png">
+<kbd>
+  <img src="/images/insertionSort.png">
+</kbd>
