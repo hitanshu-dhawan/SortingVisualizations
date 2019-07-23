@@ -69,7 +69,7 @@ var timeoutId = null;
 function onFrame(event) {
     if (typeof steps[stepsIndex] === "undefined") {
         if (timeoutId === null)
-            setTimeout(function () {
+            timeoutId = setTimeout(function () {
                 location.reload();
             }, 2 * 1000);
         return;
@@ -145,7 +145,7 @@ function contains(array, element) {
 ////////////////////////////////////////
 
 var array = [];
-var arraySize = 99;
+var arraySize = 9;
 
 var steps = [];
 var stepsIndex = 0;
