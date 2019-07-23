@@ -1,8 +1,8 @@
 Sorting Visualizations
 ========================
 
-<a href="http://hitanshudhawan.com/10PRINT/"><img src="/images/bubbleSort.png"></a>
+<img src="/images/bubbleSort.png">
 
-<a href="http://hitanshudhawan.com/10PRINT/"><img src="/images/selectionSort.png"></a>
+<img src="/images/selectionSort.png">
 
-<a href="http://hitanshudhawan.com/10PRINT/"><img src="/images/insertionSort.png"></a>
+<img src="/images/insertionSort.png">
