@@ -64,16 +64,9 @@ function insertionSort() {
 ///////// PaperScript functions ////////
 ////////////////////////////////////////
 
-var timeoutId = null;
-
 function onFrame(event) {
-    if (typeof steps[stepsIndex] === "undefined") {
-        if (timeoutId === null)
-            timeoutId = setTimeout(function () {
-                location.reload();
-            }, 2 * 1000);
+    if (typeof steps[stepsIndex] === "undefined")
         return;
-    }
 
     // clear canvas
     if (project.activeLayer.hasChildren()) {
@@ -145,7 +138,7 @@ function contains(array, element) {
 ////////////////////////////////////////
 
 var array = [];
-var arraySize = 9;
+var arraySize = 99;
 
 var steps = [];
 var stepsIndex = 0;
