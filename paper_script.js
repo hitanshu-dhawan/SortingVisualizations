@@ -2,7 +2,7 @@
 // https://khan4019.github.io/front-end-Interview-Questions/sort.html
 
 var array = [];
-var arraySize = 99;
+var arraySize = 100;
 
 var steps = [];
 var stepsIndex = 0;
@@ -11,9 +11,8 @@ prepareArray();
 shuffleArray();
 
 // bubbleSort();
-selectionSort();
-// insertionSort();
-
+// selectionSort();
+insertionSort();
 
 
 ////////////////////////////////////////
@@ -29,10 +28,11 @@ function bubbleSort() {
                 var temp = array[j - 1];
                 array[j - 1] = array[j];
                 array[j] = temp;
-                saveStep();
+                saveStep([j]);
             }
         }
     }
+    saveStep();
 }
 
 function selectionSort() {
@@ -44,12 +44,14 @@ function selectionSort() {
             if (array[j] < array[minIndex]) {
                 minIndex = j;
             }
+            saveStep([minIndex, j]);
         }
         var temp = array[i];
         array[i] = array[minIndex];
         array[minIndex] = temp;
-        saveStep();
+        saveStep([i, minIndex]);
     }
+    saveStep();
 }
 
 function insertionSort() {
@@ -61,13 +63,51 @@ function insertionSort() {
         while (j >= 0 && array[j] > key) {
             array[j + 1] = array[j];
             j--;
+            saveStep([j + 1]);
         }
         array[j + 1] = key;
         saveStep();
     }
+    saveStep();
 }
 
 ////////////////////////////////////////
+///////// PaperScript functions ////////
+////////////////////////////////////////
+
+function onFrame(event) {
+    if (typeof steps[stepsIndex] === "undefined") {
+        // location.reload(); // todo : reload after 2 seconds (setTimeout)
+        return;
+    }
+
+    // clear canvas
+    if (project.activeLayer.hasChildren()) {
+        project.activeLayer.removeChildren();
+    }
+
+    var markedIndexes = steps[stepsIndex].markedIndexes;
+    var array = steps[stepsIndex].array;
+    for (i = 0; i < arraySize; i++) {
+        var width = view.size.width / arraySize;
+        var height = array[i] * (view.size.height / arraySize);
+        drawRectangle(
+            i * width,
+            view.size.height,
+            i * width + width,
+            view.size.height - height,
+            contains(markedIndexes, i)
+        );
+    }
+
+    stepsIndex++;
+}
+
+function drawRectangle(x1, y1, x2, y2, marked) {
+    var rectangle = new Rectangle(new Point(x1, y1), new Point(x2, y2));
+    var path = new Path.Rectangle(rectangle);
+    path.fillColor = marked ? 'red' : 'white';
+}
 
 ////////////////////////////////////////
 //////////// Util functions ////////////
@@ -90,42 +130,20 @@ function shuffleArray() {
     }
 }
 
-function saveStep() {
-    steps.push(array.slice());
+function saveStep(markedIndexes) {
+    steps.push({
+        markedIndexes: markedIndexes,
+        array: array.slice()
+    });
 }
 
-////////////////////////////////////////
-
-////////////////////////////////////////
-///////// PaperScript functions ////////
-////////////////////////////////////////
-
-function onFrame(event) {
-    if (typeof steps[stepsIndex] === "undefined") {
-        // location.reload(); // todo : reload after 2 seconds (setTimeout)
+function contains(array, element) {
+    if (typeof array === "undefined")
         return;
+    for (var i = 0; i < array.length; i++) {
+        if (array[i] === element) {
+            return true;
+        }
     }
-
-    // clear canvas
-    if (project.activeLayer.hasChildren()) {
-        project.activeLayer.removeChildren();
-    }
-
-    var arr = steps[stepsIndex++]
-    for (i = 0; i < arraySize; i++) {
-        var width = view.size.width / arraySize;
-        var height = arr[i] * (view.size.height / arraySize);
-        drawRectangle(
-            i * width,
-            view.size.height,
-            i * width + width,
-            view.size.height - height
-        );
-    }
-}
-
-function drawRectangle(x1, y1, x2, y2) {
-    var rectangle = new Rectangle(new Point(x1, y1), new Point(x2, y2));
-    var path = new Path.Rectangle(rectangle);
-    path.fillColor = 'white';
+    return false;
 }
