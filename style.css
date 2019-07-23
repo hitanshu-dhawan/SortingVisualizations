@@ -1,6 +1,9 @@
-body {
+* {
     margin: 0;
     padding: 0;
+}
+
+body {
     background-color: black;
 }
 
@@ -8,4 +11,12 @@ canvas {
     position: fixed;
     height: 100%;
     width: 100%;
+}
+
+#heading {
+    padding: 16px;
+    font-family: cursive;
+    font-size: 40px;
+    color: white;
+    text-decoration: underline;
 }

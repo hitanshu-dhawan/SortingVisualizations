@@ -1,23 +1,12 @@
-// Sorting Visualizations
-// https://khan4019.github.io/front-end-Interview-Questions/sort.html
-
-var array = [];
-var arraySize = 100;
-
-var steps = [];
-var stepsIndex = 0;
-
-prepareArray();
-shuffleArray();
-
-// bubbleSort();
-// selectionSort();
-insertionSort();
-
-
 ////////////////////////////////////////
 ////////// Sorting Algorithms //////////
 ////////////////////////////////////////
+
+var sortingAlgorithms = {
+    bubbleSort: bubbleSort,
+    selectionSort: selectionSort,
+    insertionSort: insertionSort
+};
 
 function bubbleSort() {
     saveStep();
@@ -75,9 +64,14 @@ function insertionSort() {
 ///////// PaperScript functions ////////
 ////////////////////////////////////////
 
+var timeoutId = null;
+
 function onFrame(event) {
     if (typeof steps[stepsIndex] === "undefined") {
-        // location.reload(); // todo : reload after 2 seconds (setTimeout)
+        if (timeoutId === null)
+            setTimeout(function () {
+                location.reload();
+            }, 2 * 1000);
         return;
     }
 
@@ -146,4 +140,32 @@ function contains(array, element) {
         }
     }
     return false;
+}
+
+////////////////////////////////////////
+
+var array = [];
+var arraySize = 99;
+
+var steps = [];
+var stepsIndex = 0;
+
+prepareArray();
+shuffleArray();
+
+var heading = document.getElementById("heading");
+var randomNumber = Math.floor(Math.random() * 3);
+switch (randomNumber) {
+    case 0:
+        heading.innerHTML = "Bubble Sort"
+        sortingAlgorithms.bubbleSort();
+        break;
+    case 1:
+        heading.innerHTML = "Selection Sort"
+        sortingAlgorithms.selectionSort();
+        break;
+    case 2:
+        heading.innerHTML = "Insertion Sort"
+        sortingAlgorithms.insertionSort();
+        break;
 }
